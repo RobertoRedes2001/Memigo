@@ -7,13 +7,13 @@ CREATE TABLE users(
 	nameUser VARCHAR(50) NOT NULL,
 	passUser VARCHAR(200) NOT NULL,
 	email VARCHAR(200) NOT NULL,
-	imgUser BLOB,
+	imgUser MEDIUMTEXT,
 	PRIMARY KEY(idUser)
 );
 
 CREATE TABLE templates(
 	idTemplate INT NOT NULL AUTO_INCREMENT,
-	imgTemplate BLOB NOT NULL,
+	imgTemplate MEDIUMTEXT NOT NULL,
 	PRIMARY KEY(idTemplate)  
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE memes(
 	idMeme INT NOT NULL AUTO_INCREMENT,
 	idTemplate INT,
 	idUser INT NOT NULL,
-	imgMeme BLOB NOT NULL,
+	imgMeme MEDIUMTEXT NOT NULL,
 	likes INT NOT NULL DEFAULT 0,
 	PRIMARY KEY(idMeme) 
 ); 
