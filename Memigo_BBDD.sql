@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS memigo_v1;
 CREATE DATABASE IF NOT EXISTS memigo_v1;
 USE memigo_v1;
 
