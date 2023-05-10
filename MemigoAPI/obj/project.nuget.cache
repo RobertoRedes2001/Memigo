@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "bYgXQ/+jbN0WuwbM0Q5CG5VVya1xkKUhOZ0ReA4FK30aeVNd+d2vryBQ2QQrbozPmTkAGsLr2z4DOWndfMrvWA==",
+  "dgSpecHash": "LesHwVw6pkbyfn/NUrTJH6nr9lcL0aG40ECVBvFTYp/oIFRGAZR7VA7dfY3w+0b3yH3MBqyOsYsZVq1z9TTaqA==",
   "success": true,
   "projectFilePath": "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\romaav\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\romaav\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\romaav\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\romaav\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\romaav\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\romaav\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
   "logs": []
 }
