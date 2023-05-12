@@ -1,4 +1,4 @@
-﻿namespace MemigoAPI.Model.DTO
+﻿namespace MemigoAPI.Model.DTO.User
 {
     public class BorrarUserDTO
     {
