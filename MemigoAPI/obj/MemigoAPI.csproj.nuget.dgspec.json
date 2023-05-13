@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj": {}
+    "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\MemigoAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj": {
+    "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\MemigoAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj",
+        "projectUniqueName": "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\MemigoAPI.csproj",
         "projectName": "MemigoAPI",
-        "projectPath": "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj",
+        "projectPath": "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\MemigoAPI.csproj",
         "packagesPath": "C:\\Users\\romaav\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\obj\\",
+        "outputPath": "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\romaav\\AppData\\Roaming\\NuGet\\NuGet.Config",
