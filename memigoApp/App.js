@@ -1,114 +1,100 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import * as React from 'react';
+import { PantallasProvider } from './components/Contextos/PantallasContext';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import LogIn from './components/Pantallas/LogIn';
+import LogUp from './components/Pantallas/LogUp';
+import Home from './components/Pantallas/home';
+import Usu from './components/Pantallas/User';
+import Opciones from './components/Pantallas/Options';
+import SubirMeme from './components/Pantallas/SubirMeme';
+import EditarPerfil from './components/Pantallas/EditProfile';
+import VerMemes from './components/Pantallas/VerMemes';
+import CrearMemes from './components/Pantallas/CrearMemes';
+import Post from './components/Pantallas/Publicacion';
 
-import React from 'react';
+const Stack = createStackNavigator();
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const App = () => (
+  <PantallasProvider>
+    <NavigationContainer>
+      <Stack.Navigator options="false">
+        <Stack.Screen
+          name="Log In"
+          component={LogIn}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Log Up"
+          component={LogUp}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Proximamente"
+          component={CrearMemes}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Ver Memes"
+          component={VerMemes}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Options"
+          component={Opciones}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Subir Meme"
+          component={SubirMeme}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="User"
+          component={Usu}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Edit Profile"
+          component={EditarPerfil}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Publicacion"
+          component={Post}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </PantallasProvider>
+);
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-function Section({children, title}) {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default App;
