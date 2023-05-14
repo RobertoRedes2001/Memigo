@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ddF4NgbLLWepspkTpbn7xGZWm2EfB2xZHvCm9GjanUYgxAhDG6vI8JM6oV89kSSq19sMwLT38Cs32D4aTqGelA==",
+  "dgSpecHash": "yGgLv0TtYJHx/CQINpymxEvJUz6KT7AGOwrasOPE6e7n4iEwc23hmenyUWV/9MRYwgWNc6KnTtMheRvve2Se6g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\romaav\\Documents\\APImemigo\\MemigoAPI\\MemigoAPI.csproj",
+  "projectFilePath": "C:\\Users\\romaav\\Documents\\memigo\\MemigoAPI\\MemigoAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\romaav\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\romaav\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
