@@ -5,6 +5,17 @@ import { IconButton, Text } from 'react-native-paper';
 export default function PostItem({ image, likes }) {
   
   const [liked, setLiked] = useState(false);
+  const [meGusta, setMegusta] = useState(5);
+
+  function darFav(){
+    if(liked){
+      setLiked(!liked)
+      setMegusta(5);
+    }else{
+      setLiked(!liked)
+      setMegusta(6)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -14,9 +25,9 @@ export default function PostItem({ image, likes }) {
           icon={liked ? 'heart' : 'heart-outline'}
           color={liked ? 'red' : 'black'}
           size={30}
-          onPress={() => setLiked(!liked)}
+          onPress={darFav}
         />
-        <Text style={styles.likes}>{likes} likes</Text>
+        <Text style={styles.likes}>{meGusta} likes</Text>
       </View>
     </View>
   );
@@ -29,7 +40,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 300,
+    height: 400,
   },
   actions: {
     flexDirection: 'row',

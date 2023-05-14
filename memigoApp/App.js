@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PantallasProvider } from './components/Contextos/PantallasContext';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
 import LogIn from './components/Pantallas/LogIn';
 import LogUp from './components/Pantallas/LogUp';
 import Home from './components/Pantallas/home';
@@ -94,7 +93,5 @@ const App = () => (
     </NavigationContainer>
   </PantallasProvider>
 );
-
-const styles = StyleSheet.create({});
 
 export default App;

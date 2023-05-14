@@ -4,6 +4,8 @@ import { TextInput, Button, Checkbox, IconButton } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
+import Email from '../Componentes/TextInputEmail';
+import Password from '../Componentes/TextInputPassword';
 
 export default function LogUpScreen({ navigation }) {
   const {
@@ -19,7 +21,6 @@ export default function LogUpScreen({ navigation }) {
     setIdioma,
   } = useContext(PantallasContext);
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [icono, setIcono] = useState('');
   const [checkValidEmail, setCheckValidEmail] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isSelected, setisSelected] = useState(false);
@@ -104,20 +105,6 @@ export default function LogUpScreen({ navigation }) {
     navigation.navigate('Log In');
   };
 
-  const handleCheckEmail = (text) => {
-    let re = /\S+@\S+\.\S+/;
-    let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-
-    setEmail(text);
-    if (re.test(text) || regex.test(text)) {
-      setCheckValidEmail(true);
-      setIcono('check');
-    } else {
-      setCheckValidEmail(false);
-      setIcono('');
-    }
-  };
-
   return (
     <ImageBackground source={background} style={styles.background}>
       <View style={styles.header}>
@@ -140,52 +127,44 @@ export default function LogUpScreen({ navigation }) {
           onChangeText={(text) => setUser(text)}
           underlineColor="red"
           theme={{ colors: { primary: 'red' } }}
-          style={{ width: '75%', marginBottom: 20 }}
+          style={{ width: '85%', marginBottom: 20 }}
         />
-        <TextInput
-          keyboardType="email-address"
-          label={idioma == 'es' ? 'Correo electronico' : 'Email'}
-          value={email}
-          onChangeText={(text) => handleCheckEmail(text)}
-          right={<TextInput.Icon icon={icono} />}
-          underlineColor="red"
-          theme={{ colors: { primary: 'red' } }}
-          style={{ width: '75%', marginBottom: 20 }}
+        <Email
+          idioma={idioma}
+          mail={email}
+          check={checkValidEmail}
+          onInputChange={(isValid, emailValue) => {
+            setCheckValidEmail(isValid);
+            setEmail(emailValue);
+          }}
+          navigateTo={navigation.isFocused()}
         />
-        <TextInput
-          label={idioma == 'es' ? 'Contraseña' : 'Password'}
-          value={password}
-          onChangeText={setPassword}
-          style={{ width: '75%', marginBottom: 20, paddingHorizontal: 10 }}
-          underlineColor="red"
-          theme={{ colors: { primary: 'red' } }}
-          right={
-            <TextInput.Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          }
-          secureTextEntry={!showPassword}
+        <Password
+          idioma={idioma}
+          pass={password}
+          show={showPassword}
+          onInputChange={(showP, text) => {
+            setShowPassword(showP);
+            setPassword(text);
+          }}
+          navigateTo={navigation.isFocused()}
+          type={true}
+          typeA={true}
         />
-        <TextInput
-          label={idioma == 'es' ? 'Confirmar Contraseña' : 'Confirm Password'}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          style={{ width: '75%', marginBottom: 20, paddingHorizontal: 10 }}
-          underlineColor="red"
-          theme={{ colors: { primary: 'red' } }}
-          right={
-            <TextInput.Icon
-              name={showConfirmPassword ? 'eye' : 'eye-off'}
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-            />
-          }
-          secureTextEntry={!showConfirmPassword}
+        <Password
+          idioma={idioma}
+          pass={confirmPassword}
+          show={showConfirmPassword}
+          onInputChange={(showP, text) => {
+            setShowConfirmPassword(showP);
+            setConfirmPassword(text);
+          }}
+          navigateTo={navigation.isFocused()}
         />
         <Button
           mode="contained"
           onPress={pickImage}
-          style={{ width: '75%' }}
+          style={{ width: '75%',  marginTop: 20, }}
           color={isSelected ? 'blue' : 'black'}>
           {idioma == 'es' ? 'Seleccionar imagen' : 'Pick an image'}
         </Button>
@@ -222,7 +201,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 40,
     marginTop: 20,
     borderWidth: 1,
     borderColor: 'red',
@@ -238,6 +217,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 20,
   },
   checkboxText: {
     fontSize: 16,

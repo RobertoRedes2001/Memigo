@@ -14,7 +14,7 @@ import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
 
 export default function LogUpScreen({ navigation }) {
-  const { imageUri, setImageUri, idioma, setIdioma } =
+  const { imageUri, setImageUri, idioma, setIdioma, memeUri, setMemeUri } =
     useContext(PantallasContext);
 
   const [isSelected, setisSelected] = useState(false);
@@ -35,7 +35,7 @@ export default function LogUpScreen({ navigation }) {
 
     if (!result.canceled) {
       const base64 = result.assets[0].base64;
-      setImageUri(base64);
+      setMemeUri(base64);
       setisSelected(true);
     }
   };
@@ -45,16 +45,19 @@ export default function LogUpScreen({ navigation }) {
       Alert.alert(noHaSubidoTitulo, noHaSubidoCuerpo, [{ text: 'OK' }]);
     }else{
       Alert.alert(seHaSubidoTitulo, seHaSubidoCuerpo, [{ text: 'OK' }]);
-      setImageUri('');
+      setMemeUri('');
+      setisSelected(false);
     }
     
   };
 
   const handleProfile = () => {
+    setMemeUri('');
     navigation.navigate('User');
   };
 
   const onSubmit = () => {
+    setMemeUri('');
     navigation.navigate('Home');
   };
 
@@ -83,9 +86,9 @@ export default function LogUpScreen({ navigation }) {
         <Text style={styles.title}>
           {idioma == 'es' ? 'SUBIR MEME' : 'UPLOAD MEME!'}
         </Text>
-        {imageUri && (
+        { memeUri && (
           <Image
-            source={{ uri: `data:image/png;base64,${imageUri}` }}
+            source={{ uri: `data:image/png;base64,${memeUri}` }}
             style={styles.image}
             resizeMode="contain"
           />

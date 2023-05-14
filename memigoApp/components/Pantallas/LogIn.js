@@ -3,22 +3,24 @@ import { View, StyleSheet, Text, ImageBackground, Alert } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
+import Email from '../Componentes/TextInputEmail';
+import Password from '../Componentes/TextInputPassword';
 
 export default function LoginScreen({ navigation }) {
-  const [icono, setIcono] = useState('');
-  const [checkValidEmail, setCheckValidEmail] = useState(false);
+
   const {
     email,
     setEmail,
     password,
     setPassword,
-    user,
-    setUser,
     idioma,
     setIdioma,
+    user,
+    setUser
   } = useContext(PantallasContext);
 
   const [showPassword, setShowPassword] = useState(false);
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
 
   const alertaEmailTitulo = idioma == 'es' ? 'Error de correo' : 'Email error';
   const alertaEmailCuerpo =
@@ -42,6 +44,7 @@ export default function LoginScreen({ navigation }) {
         onLogIn();
       }
     } else {
+      console.log(email);
       Alert.alert(alertaEmailTitulo, alertaEmailCuerpo, [{ text: 'OK' }]);
     }
   };
@@ -49,30 +52,16 @@ export default function LoginScreen({ navigation }) {
   const onLogIn = () => {
     setEmail('');
     setPassword('');
-    setIcono('');
+    setShowPassword(false);
     navigation.navigate('Home');
   };
 
   const onRegister = () => {
-    setUser('');
     setEmail('');
     setPassword('');
-    setIcono('');
+    setShowPassword(false);
+    setUser('');
     navigation.navigate('Log Up');
-  };
-
-  const handleCheckEmail = (text) => {
-    let re = /\S+@\S+\.\S+/;
-    let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-
-    setEmail(text);
-    if (re.test(text) || regex.test(text)) {
-      setCheckValidEmail(true);
-      setIcono('check');
-    } else {
-      setCheckValidEmail(false);
-      setIcono('');
-    }
   };
 
   return (
@@ -81,30 +70,27 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.title}>
           {idioma == 'es' ? '¡Bienvenido!' : 'Welcome!'}
         </Text>
-        <TextInput
-          label={idioma == 'es' ? 'Correo Electronico' : 'Email'}
-          keyboardType="email-address"
-          value={email}
-          onChangeText={(text) => handleCheckEmail(text)}
-          right={<TextInput.Icon icon={icono} />}
-          underlineColor="red"
-          theme={{ colors: { primary: 'red' } }}
-          style={{ width: '100%', marginBottom: 20, paddingHorizontal: 10 }}
+        <Email
+          idioma={idioma}
+          mail={email}
+          onInputChange={(isValid, emailValue) => {
+            setCheckValidEmail(isValid);
+            setEmail(emailValue);
+          }}
+          navigateTo={navigation.isFocused()}
+          typeB={true}
         />
-        <TextInput
-          label={idioma == 'es' ? 'Contraseña' : 'Password'}
-          value={password}
-          onChangeText={setPassword}
-          style={{ width: '100%', marginBottom: 20, paddingHorizontal: 10 }}
-          underlineColor="red"
-          theme={{ colors: { primary: 'red' } }}
-          right={
-            <TextInput.Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              onPress={() => setShowPassword(!showPassword)}
-            />
-          }
-          secureTextEntry={!showPassword}
+        <Password
+          idioma={idioma}
+          pass={password}
+          show={showPassword}
+          onInputChange={(showP, text) => {
+            setShowPassword(showP);
+            setPassword(text);
+          }}
+          navigateTo={navigation.isFocused()}
+          typeA={true}
+          typeB={true}
         />
         <Text
           onPress={onRegister}

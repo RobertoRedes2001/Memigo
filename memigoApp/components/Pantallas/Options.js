@@ -16,7 +16,7 @@ import flagSpain from '../../assets/sp.png';
 import flagUK from '../../assets/uk.png';
 
 export default function Options({ navigation }) {
-  const { imageUri, setImageUri, idioma, setIdioma } =
+  const { imageUri, setImageUri, idioma, setIdioma, user, setUser } =
     useContext(PantallasContext);
 
   const borrarTitulo = idioma == 'es' ? '¿Estas seguro?' : 'Are you sure?';
@@ -43,6 +43,12 @@ export default function Options({ navigation }) {
     navigation.navigate('Home');
   };
 
+  const borrarCuenta = () => {
+    setImageUri('');
+    setUser('');
+    navigation.navigate('Log In');
+  }
+
   const handleDeleteAccount = () => {
     Alert.alert(borrarTitulo, borrarCuerpo, [
       {
@@ -52,7 +58,7 @@ export default function Options({ navigation }) {
       {
         text: borrarOpcion2,
         style: 'destructive',
-        onPress: () => navigation.navigate('Log In'),
+        onPress: () => borrarCuenta(),
       },
     ]);
   };

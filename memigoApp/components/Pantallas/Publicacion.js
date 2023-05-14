@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Avatar, IconButton, Text } from 'react-native-paper';
 import pantallasContext from '../Contextos/PantallasContext';
-import PostItem from '../Contextos/PostItem';
+import PostItem from '../Componentes/PostItem';
 
 function Publicaciones({ navigation }) {
   const { user, setUser, imageUri, setImageUri } = useContext(pantallasContext);
@@ -40,7 +40,7 @@ function Publicaciones({ navigation }) {
         <Text style={styles.username}>{user}</Text>
       </View>
       <PostItem
-        image="https://rerollcdn.com/STARRAIL/Characters/Full/1001.png"
+        image={'https://pbs.twimg.com/media/FwGSzknWwAAGaCK?format=png&name=360x360'}
         likes={5}
         navigation={navigation}
       />
