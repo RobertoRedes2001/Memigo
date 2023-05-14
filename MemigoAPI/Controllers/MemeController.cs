@@ -21,7 +21,7 @@ namespace MemigoAPI.Controllers
         }
         [HttpGet] //EndPoint
         [Route("GetMeme/{IdMeme}")]
-        public IActionResult GetOneUser([FromRoute] int IdMeme)
+        public IActionResult GetOneMeme([FromRoute] int IdMeme)
         {
             var memes = _context.Memes.Where<Meme>(Meme => Meme.IdMeme == IdMeme);
             return Ok(memes);
