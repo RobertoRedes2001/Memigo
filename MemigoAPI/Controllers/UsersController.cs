@@ -57,6 +57,7 @@ namespace MemigoAPI.Controllers
         {
             var user = _context.Users.Where(User => User.IdUser == updateUser.id).FirstOrDefault();
             user.Username = (user.Username != updateUser.nombre) ? updateUser.nombre : user.Username;
+            user.UserImg = (user.UserImg != updateUser.pfp) ? updateUser.pfp : user.UserImg;
             _context.Users.Update(user);
             _context.SaveChanges();
             return Ok();

@@ -27,6 +27,14 @@ namespace MemigoAPI.Controllers
             return Ok(memes);
 
         }
+        [HttpGet] //EndPoint
+        [Route("GetMemeUser/{idUser}")]
+        public IActionResult GetMemesFromUser([FromRoute] int IdUser)
+        {
+            var memes = _context.Memes.Where<Meme>(Meme => Meme.IdUser == IdUser);
+            return Ok(memes);
+
+        }
         [HttpPost]
         [Route("PostMeme/")]
         public IActionResult Post(AgregarMemeDTO insertMeme)
