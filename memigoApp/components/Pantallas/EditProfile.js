@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,8 +12,9 @@ import * as ImagePicker from 'expo-image-picker';
 import background from '../../assets/background.png';
 
 const EditProfileScreen = ({ navigation }) => {
-  const { user, setUser, imageUri, setImageUri, idioma, setIdioma } =
+  const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId } =
     useContext(PantallasContext);
+  const [newName, setNewName] = useState(user);
 
   const alertaCambioTitulo =
     idioma == 'es' ? 'Perfil Actualizado' : 'Profile Updated';
@@ -28,9 +29,40 @@ const EditProfileScreen = ({ navigation }) => {
       ? 'El campo de nombre de usuario esta vacio. Por favor no olvide llenarlo.'
       : "The username field is empty. Please don't forget to fill it out.";
   const handleNameChange = (text) => {
+    setNewName(text);
     setUser(text);
   };
 
+  const updateUser = async (id, name,photo) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/usuarios/UpdateUsuario`;
+      const data = {
+        id: id,
+        nombre: name,
+        pfp : photo
+      };
+  
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        console.log('Usuario actualizado correctamente');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el usuario:', error);
+    }
+  };
+  
+  
+  
   const handleImageChange = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -47,9 +79,10 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const handleEditProfile = () => {
-    if (user === '') {
+    if (newName === '') {
       Alert.alert(alertaUsernameTitulo, alertaUsernameCuerpo, [{ text: 'OK' }]);
     } else {
+      updateUser(id,newName,imageUri)
       Alert.alert(alertaCambioTitulo, alertaCambioCuerpo, [{ text: 'OK' }]);
       navigation.navigate('User');
     }
@@ -69,7 +102,7 @@ const EditProfileScreen = ({ navigation }) => {
         <View style={styles.formContainer}>
           <TextInput
             label={idioma == 'es' ? 'Editar nombre' : 'Edit username'}
-            value={user}
+            value={newName}
             theme={{ colors: { primary: 'red' } }}
             onChangeText={handleNameChange}
             style={styles.input}

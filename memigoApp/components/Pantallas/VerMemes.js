@@ -1,48 +1,62 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
-  Text,
   Image,
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import PantallasContext from '../Contextos/PantallasContext';
 
-const data = [
-  { id: '1', image: require('../../assets/pera.jpg') },
-  { id: '2', image: require('../../assets/mandarina.jpg') },
-  { id: '3', image: require('../../assets/manzanas.jpg') },
-  { id: '4', image: require('../../assets/kiwi.jpg') },
-];
-
 export default function VerMemes({ navigation }) {
-  const { user, setUser, imageUri, setImageUri, idioma, setIdioma } =
+  const { imageUri, setImageUri, memeUri, setMemeUri, idMeme, setIdMeme } =
     useContext(PantallasContext);
 
+  const [datos, setDatos] = useState(null);
+
+  const getDataMemes = async () => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/memes');
+      if (response.ok) {
+        const data = await response.json();
+        setDatos(data);
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al obtener los memes:', error);
+    }
+  };
+
   const renderItem = ({ item, index }) => {
-    if (item.id === 'dummy-id') {
+    if (!item) {
       return <View style={styles.emptyItem} />;
     }
     return (
-      <TouchableOpacity style={styles.photoContainer} onPress={handlePost}>
-        <Image style={styles.photo} source={item.image} />
+      <TouchableOpacity style={styles.photoContainer} onPress={() => handlePost(item)}>
+        <Image style={styles.photo} source={{ uri: item.meme_img }} />
       </TouchableOpacity>
     );
   };
+  
 
   const handleProfile = () => {
     navigation.navigate('User');
   };
-  
-  const handlePost = () => {
-    navigation.navigate('Publicacion');
+
+  const handlePost = (item) => {
+    navigation.navigate('Publicacion', { item });
   };
+  
 
   const onSubmit = () => {
     navigation.navigate('Home');
   };
+
+  useEffect(() => {
+    getDataMemes();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -66,7 +80,7 @@ export default function VerMemes({ navigation }) {
         </TouchableOpacity>
       </View>
       <FlatList
-        data={data}
+        data={datos}
         style={{ marginTop: 20 }}
         keyExtractor={(item) => item.id}
         numColumns={2}

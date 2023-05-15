@@ -47,7 +47,7 @@ export default function Home({ navigation }) {
           style={styles.avatarWrapper}
           onPress={() => handleProfile()}>
           <Image
-            source={{ uri: `data:image/png;base64,${imageUri}` }}
+            source={{ uri: `data:image/jpg;base64,${imageUri}` }}
             resizeMode="cover"
             style={styles.avatar}
           />

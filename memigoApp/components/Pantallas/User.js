@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,8 +18,35 @@ const data = [
 ];
 
 export default function Perfil({ navigation }) {
-  const { user, setUser, imageUri, setImageUri, idioma, setIdioma } =
+  const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId } =
     useContext(PantallasContext);
+
+  const [ datos, setDatos ] = useState(null);
+  const [ publicaciones, setPublicaciones ] = useState(0);
+  const [ likes, setLikes ] = useState(0);
+
+  const getDataMemes = async (user) => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/memes/GetMemeUser/'+user);
+      if (response.ok) {
+        const data = await response.json();
+        calcularPerfil(data)
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al obtener los memes:', error);
+    }
+  };
+
+  function calcularPerfil(data){
+    let corazones=0
+    for(let i=0;i>data.length;i++){
+        corazones+=data[i].likes;
+    }
+    setPublicaciones(data.length);
+    setLikes(corazones);
+  }
 
   const renderItem = ({ item, index }) => {
     if (item.id === 'dummy-id') {
@@ -44,6 +71,13 @@ export default function Perfil({ navigation }) {
     navigation.navigate('Home');
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getDataMemes(id);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -66,13 +100,13 @@ export default function Perfil({ navigation }) {
           <Text style={styles.name}>{user}</Text>
           <View style={styles.stats}>
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>4</Text>
+              <Text style={styles.statNumber}>{publicaciones}</Text>
               <Text style={styles.statLabel}>
                 {idioma == 'es' ? 'Publicaciones' : 'Posts'}
               </Text>
             </View>
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>22</Text>
+              <Text style={styles.statNumber}>{likes}</Text>
               <Text style={styles.statLabel}>
                 {idioma == 'es' ? 'Me gustas' : 'Likes'}
               </Text>

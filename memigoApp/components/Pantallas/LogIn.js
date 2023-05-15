@@ -1,10 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, Text, ImageBackground, Alert } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
 import Email from '../Componentes/TextInputEmail';
 import Password from '../Componentes/TextInputPassword';
+import md5 from 'react-native-md5';
 
 export default function LoginScreen({ navigation }) {
 
@@ -16,11 +17,16 @@ export default function LoginScreen({ navigation }) {
     idioma,
     setIdioma,
     user,
-    setUser
+    setUser,
+    imageUri,
+    setImageUri,
+    id,
+    setId
   } = useContext(PantallasContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [checkValidEmail, setCheckValidEmail] = useState(false);
+  const [datos, setDatos] = useState(null);
 
   const alertaEmailTitulo = idioma == 'es' ? 'Error de correo' : 'Email error';
   const alertaEmailCuerpo =
@@ -34,19 +40,39 @@ export default function LoginScreen({ navigation }) {
       ? 'Escriba su contraseña para entrar o compruebe que este bien escrita.'
       : 'Enter your password to log in or check that it is spelled correctly.';
 
-  const handleLogin = () => {
-    if (checkValidEmail) {
-      if (password == '') {
-        Alert.alert(alertaPasswordTitulo, alertaPasswordCuerpo, [
-          { text: 'OK' },
-        ]);
+
+  const getDataUsers = async () => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/usuarios');
+      if (response.ok) {
+        const data = await response.json();
+        setDatos(data);
       } else {
-        onLogIn();
+        console.log('Error en la respuesta:', response.status);
       }
-    } else {
-      console.log(email);
-      Alert.alert(alertaEmailTitulo, alertaEmailCuerpo, [{ text: 'OK' }]);
+    } catch (error) {
+      console.log('Error al obtener los usuarios:', error);
     }
+  };
+
+  const handleLogin = (mail, pass) => {
+    getDataUsers();
+    console.log(datos.length);
+    for (let i = 0; i < datos.length; i++) {
+      if (datos[i].email == mail) {
+        if (datos[i].pass == md5.hex_md5(pass)) {
+          setUser(datos[i].username)
+          setImageUri(datos[i].userImg)
+          setId(datos[i].idUser)
+          return onLogIn();
+        }else{
+          return Alert.alert(alertaPasswordTitulo, alertaPasswordCuerpo, [{ text: 'OK' }]);
+        }
+      }else{
+        return Alert.alert(alertaEmailTitulo, alertaEmailCuerpo, [{ text: 'OK' }]);
+      }
+    }
+
   };
 
   const onLogIn = () => {
@@ -63,6 +89,13 @@ export default function LoginScreen({ navigation }) {
     setUser('');
     navigation.navigate('Log Up');
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getDataUsers();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <ImageBackground source={background} style={styles.background}>
@@ -106,7 +139,7 @@ export default function LoginScreen({ navigation }) {
         </Text>
         <Button
           mode="contained"
-          onPress={handleLogin}
+          onPress={() => handleLogin(email, password)}
           style={{ width: '60%', fontWeight: 'bold' }}
           color="white">
           {idioma == 'es' ? 'Iniciar Sesion' : 'Log In'}

@@ -6,6 +6,7 @@ import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
 import Email from '../Componentes/TextInputEmail';
 import Password from '../Componentes/TextInputPassword';
+import md5 from 'react-native-md5';
 
 export default function LogUpScreen({ navigation }) {
   const {
@@ -70,6 +71,35 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
+  const postUser = async (name,pass,mail,photo) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/usuarios/PostUsuario`;
+      const data = {
+        nombre: name,
+        contra: md5.hex_md5(pass),
+        email : mail,
+        pfp : photo
+      };
+  
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        console.log('Usuario actualizado correctamente');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el usuario:', error);
+    }
+  };
+
   const handleLogUp = () => {
     if (user === '') {
       Alert.alert(alertaUsernameTitulo, alertaUsernameCuerpo, [{ text: 'OK' }]);
@@ -96,6 +126,7 @@ export default function LogUpScreen({ navigation }) {
 
   const onRegister = () => {
     Alert.alert(registroTitulo, registroCuerpo, [{ text: 'OK' }]);
+    postUser(user,password,email,imageUri);
     setEmail('');
     setPassword('');
     navigation.navigate('Log In');

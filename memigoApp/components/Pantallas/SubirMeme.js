@@ -14,7 +14,7 @@ import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
 
 export default function LogUpScreen({ navigation }) {
-  const { imageUri, setImageUri, idioma, setIdioma, memeUri, setMemeUri } =
+  const { imageUri, setImageUri, idioma, setIdioma, memeUri, setMemeUri, id, setId } =
     useContext(PantallasContext);
 
   const [isSelected, setisSelected] = useState(false);
@@ -24,6 +24,34 @@ export default function LogUpScreen({ navigation }) {
   const noHaSubidoTitulo = idioma == 'es' ? 'No ha subido nada.' : 'Nothing was Uploaded!';
   const noHaSubidoCuerpo =
     idioma == 'es' ? 'No ha subido nada... todavia.' : 'why are you like this?';
+
+  const postMeme = async (idUsu, meme) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/memes/PostMeme`;
+      const data = {
+        idUser: idUsu,
+        memeImg: meme,
+        likes: 0
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        console.log('Usuario actualizado correctamente');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el usuario:', error);
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,14 +69,15 @@ export default function LogUpScreen({ navigation }) {
   };
 
   const onSubmitMeme = () => {
-    if(!isSelected){
+    if (!isSelected) {
       Alert.alert(noHaSubidoTitulo, noHaSubidoCuerpo, [{ text: 'OK' }]);
-    }else{
+    } else {
+      postMeme(id,memeUri);
       Alert.alert(seHaSubidoTitulo, seHaSubidoCuerpo, [{ text: 'OK' }]);
       setMemeUri('');
       setisSelected(false);
     }
-    
+
   };
 
   const handleProfile = () => {
@@ -86,7 +115,7 @@ export default function LogUpScreen({ navigation }) {
         <Text style={styles.title}>
           {idioma == 'es' ? 'SUBIR MEME' : 'UPLOAD MEME!'}
         </Text>
-        { memeUri && (
+        {memeUri && (
           <Image
             source={{ uri: `data:image/png;base64,${memeUri}` }}
             style={styles.image}
@@ -149,11 +178,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginRight: 10,
   },
-   avatar: {
+  avatar: {
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor:'red'
+    backgroundColor: 'red'
   },
   header: {
     height: 80,

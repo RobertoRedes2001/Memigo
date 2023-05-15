@@ -16,7 +16,7 @@ import flagSpain from '../../assets/sp.png';
 import flagUK from '../../assets/uk.png';
 
 export default function Options({ navigation }) {
-  const { imageUri, setImageUri, idioma, setIdioma, user, setUser } =
+  const { imageUri, setImageUri, idioma, setIdioma, user, setUser, id, seiId } =
     useContext(PantallasContext);
 
   const borrarTitulo = idioma == 'es' ? '¿Estas seguro?' : 'Are you sure?';
@@ -26,6 +26,32 @@ export default function Options({ navigation }) {
       : 'Do you truly want to delete your account? :(';
   const borrarOpcion1 = idioma == 'es' ? 'Cancelar' : 'Cancel';
   const borrarOpcion2 = idioma == 'es' ? 'Borrar Cuenta' : 'Delete Account';
+
+  const deleteUser = async (id) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/usuarios/DeleteUsuario`;
+      const data = {
+        id: id,
+      };
+  
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        console.log('Usuario actualizado correctamente');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el usuario:', error);
+    }
+  };
 
   const toggleLanguage = () => {
     setIdioma(idioma === 'es' ? 'uk' : 'es');
@@ -44,8 +70,7 @@ export default function Options({ navigation }) {
   };
 
   const borrarCuenta = () => {
-    setImageUri('');
-    setUser('');
+    deleteUser(id);
     navigation.navigate('Log In');
   }
 
