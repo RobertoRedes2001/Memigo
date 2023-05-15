@@ -9,10 +9,11 @@ builder.Services.AddSingleton<MemigoV1Context>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "MyCors", builder => {
-        builder.AllowAnyOrigin().AllowAnyMethod();
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 var app = builder.Build();
+app.UseCors("MyCors");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
