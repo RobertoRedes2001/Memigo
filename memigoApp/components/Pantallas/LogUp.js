@@ -129,6 +129,8 @@ export default function LogUpScreen({ navigation }) {
     postUser(user,password,email,imageUri);
     setEmail('');
     setPassword('');
+    setUser('')
+    setImageUri('');
     navigation.navigate('Log In');
   };
 

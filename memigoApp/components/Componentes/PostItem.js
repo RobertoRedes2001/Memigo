@@ -1,25 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 
-export default function PostItem({ image, likes }) {
+export default function PostItem({ id, image, likes, navigation }) {
   
   const [liked, setLiked] = useState(false);
-  const [meGusta, setMegusta] = useState(5);
+  const [meGustas, setMeGustas] = useState(likes);
 
-  function darFav(){
+  const updateLike = async (id) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/memes/LikeMeme`;
+      const data = {
+        id: id,
+      };
+  
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        console.log('Meme Likeado');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el meme:', error);
+    }
+  };
+
+  const updateDislike = async (id) => {
+    try {
+      const url = `http://192.168.1.55:7038/api/memes/DislikeMeme`;
+      const data = {
+        id: id,
+      };
+  
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+  
+      if (response.ok) {
+        console.log('Meme Dislikeado');
+        // Realiza acciones adicionales después de la actualización exitosa
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al actualizar el meme:', error);
+    }
+  };
+
+  const darFav = async () => {
     if(liked){
-      setLiked(!liked)
-      setMegusta(5);
+      setLiked(false)
+      setMeGustas(meGustas-1);
+      await Promise.all([updateDislike(id)]);
     }else{
-      setLiked(!liked)
-      setMegusta(6)
+      setLiked(true)
+      setMeGustas(meGustas+1);
+      await Promise.all([updateLike(id)]);
     }
   }
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image}/>
+      <Image source={{ uri: `data:image/png;base64,${image}`}} style={styles.image}/>
       <View style={styles.actions}>
         <IconButton
           icon={liked ? 'heart' : 'heart-outline'}
@@ -27,7 +81,7 @@ export default function PostItem({ image, likes }) {
           size={30}
           onPress={darFav}
         />
-        <Text style={styles.likes}>{meGusta} likes</Text>
+        <Text style={styles.likes}>{meGustas} likes</Text>
       </View>
     </View>
   );

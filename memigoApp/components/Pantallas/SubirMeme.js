@@ -68,11 +68,11 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
-  const onSubmitMeme = () => {
+  const onSubmitMeme = async () => {
     if (!isSelected) {
       Alert.alert(noHaSubidoTitulo, noHaSubidoCuerpo, [{ text: 'OK' }]);
     } else {
-      postMeme(id,memeUri);
+      await Promise.all(postMeme(id,memeUri));
       Alert.alert(seHaSubidoTitulo, seHaSubidoCuerpo, [{ text: 'OK' }]);
       setMemeUri('');
       setisSelected(false);

@@ -10,18 +10,14 @@ import md5 from 'react-native-md5';
 export default function LoginScreen({ navigation }) {
 
   const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    idioma,
-    setIdioma,
-    user,
-    setUser,
-    imageUri,
-    setImageUri,
-    id,
-    setId
+
+    email, setEmail,
+    password, setPassword,
+    idioma, setIdioma,
+    user, setUser,
+    imageUri, setImageUri,
+    id, setId,
+
   } = useContext(PantallasContext);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -55,21 +51,22 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
-  const handleLogin = (mail, pass) => {
-    getDataUsers();
-    console.log(datos.length);
+  const handleLogin = async (mail, pass) => {
+    if(datos.length==0){
+      await Promise.all([getDataUsers()]);
+    }
     for (let i = 0; i < datos.length; i++) {
       if (datos[i].email == mail) {
         if (datos[i].pass == md5.hex_md5(pass)) {
           setUser(datos[i].username)
           setImageUri(datos[i].userImg)
-          setId(datos[i].idUser)
+          setId(datos[i].idUser);
           return onLogIn();
-        }else{
-          return Alert.alert(alertaPasswordTitulo, alertaPasswordCuerpo, [{ text: 'OK' }]);
+        } else {
+          //return Alert.alert(alertaPasswordTitulo, alertaPasswordCuerpo, [{ text: 'OK' }]);
         }
-      }else{
-        return Alert.alert(alertaEmailTitulo, alertaEmailCuerpo, [{ text: 'OK' }]);
+      } else {
+        //return Alert.alert(alertaEmailTitulo, alertaEmailCuerpo, [{ text: 'OK' }]);
       }
     }
 

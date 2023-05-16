@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import background from '../../assets/background.png';
 import PantallasContext from '../Contextos/PantallasContext';
 
 export default function Home({ navigation }) {
-  const { user, setUser, imageUri, setImageUri, idioma, setIdioma } =
+  const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId, saveId, setSaveId } =
     useContext(PantallasContext);
 
   const handleOptions = () => {

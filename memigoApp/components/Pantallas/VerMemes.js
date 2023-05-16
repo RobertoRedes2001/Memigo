@@ -5,13 +5,16 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Text
 } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import PantallasContext from '../Contextos/PantallasContext';
 
 export default function VerMemes({ navigation }) {
-  const { imageUri, setImageUri, memeUri, setMemeUri, idMeme, setIdMeme } =
-    useContext(PantallasContext);
+  const { id, setId, imageUri, setImageUri, userType, setUserType,
+    memeUri, setMemeUri, memeImg, setMemeImg, memeLikes, setMemeLikes, idMeme, setIdMeme,
+    otherId, setOtherId, otherUser, setOtherUser, otherImageUri, setOtherImageUri
+  } = useContext(PantallasContext);
 
   const [datos, setDatos] = useState(null);
 
@@ -29,34 +32,73 @@ export default function VerMemes({ navigation }) {
     }
   };
 
-  const renderItem = ({ item, index }) => {
-    if (!item) {
-      return <View style={styles.emptyItem} />;
+  const getDataMeme = async (meme) => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/memes/GetMeme/' + meme);
+      if (response.ok) {
+        const data = await response.json();
+        setMemeImg(data[0].memeImg);
+        setMemeLikes(data[0].likes);
+        setOtherId(data[0].idUser);
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al obtener los memes:', error);
     }
-    return (
-      <TouchableOpacity style={styles.photoContainer} onPress={() => handlePost(item)}>
-        <Image style={styles.photo} source={{ uri: item.meme_img }} />
-      </TouchableOpacity>
-    );
   };
-  
+
+  const getDataUser = async (id) => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/usuarios/GetUsuario/' + id);
+      if (response.ok) {
+        const data = await response.json();
+        setOtherImageUri(data[0].userImg);
+        setOtherUser(data[0].username);
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al obtener los memes:', error);
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.photoContainer} onPress={() => handlePost(item.idMeme)}>
+      <Image style={styles.photo} source={{ uri: `data:image/png;base64,${item.memeImg}` }} />
+    </TouchableOpacity>
+  );
+
 
   const handleProfile = () => {
     navigation.navigate('User');
   };
 
-  const handlePost = (item) => {
-    navigation.navigate('Publicacion', { item });
-  };
-  
+
+  const handlePost = async(x)=>{
+    setIdMeme(x);
+    await Promise.all([getDataMeme(x)]);
+    if(id!=otherId){
+      await Promise.all([getDataUser(otherId)]);
+      setUserType(false);
+      navigation.navigate('Publicacion');
+    }else{
+      setUserType(true);
+      navigation.navigate('Publicacion');
+    }  
+  }
+
 
   const onSubmit = () => {
     navigation.navigate('Home');
   };
 
   useEffect(() => {
-    getDataMemes();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getDataMemes();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -81,11 +123,9 @@ export default function VerMemes({ navigation }) {
       </View>
       <FlatList
         data={datos}
-        style={{ marginTop: 20 }}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
+        keyExtractor={(item) => item.idMeme}
         renderItem={renderItem}
-        columnWrapperStyle={styles.columnWrapper}
+        numColumns={2}
       />
     </View>
   );

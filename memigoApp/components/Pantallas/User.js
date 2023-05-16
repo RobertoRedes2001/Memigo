@@ -10,27 +10,23 @@ import {
 import { Button, IconButton } from 'react-native-paper';
 import PantallasContext from '../Contextos/PantallasContext';
 
-const data = [
-  { id: '1', image: require('../../assets/pera.jpg') },
-  { id: '2', image: require('../../assets/mandarina.jpg') },
-  { id: '3', image: require('../../assets/manzanas.jpg') },
-  { id: '4', image: require('../../assets/kiwi.jpg') },
-];
-
 export default function Perfil({ navigation }) {
-  const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId } =
+  const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId, 
+    idMeme, setIdMeme, memeImg, setMemeImg, memeLikes, setMemeLikes } =
     useContext(PantallasContext);
 
   const [ datos, setDatos ] = useState(null);
   const [ publicaciones, setPublicaciones ] = useState(0);
   const [ likes, setLikes ] = useState(0);
 
+  //Get de los Memes del usuario de perfil
   const getDataMemes = async (user) => {
     try {
       const response = await fetch('http://192.168.1.55:7038/api/memes/GetMemeUser/'+user);
       if (response.ok) {
         const data = await response.json();
-        calcularPerfil(data)
+        setDatos(data);
+        calcularPerfil(data);
       } else {
         console.log('Error en la respuesta:', response.status);
       }
@@ -39,31 +35,46 @@ export default function Perfil({ navigation }) {
     }
   };
 
+  //Get del meme sobre el que se a presionado
+  const getDataMeme = async (meme) => {
+    try {
+      const response = await fetch('http://192.168.1.55:7038/api/memes/GetMeme/' + meme);
+      if (response.ok) {
+        const data = await response.json();
+        setMemeImg(data[0].memeImg);
+        setMemeLikes(data[0].likes);
+      } else {
+        console.log('Error en la respuesta:', response.status);
+      }
+    } catch (error) {
+      console.log('Error al obtener los memes:', error);
+    }
+  };
+
+  //Funcion para hacer recuento de publicaciones y likes de un usuario
   function calcularPerfil(data){
     let corazones=0
-    for(let i=0;i>data.length;i++){
+    for(let i=0;i<data.length;i++){
         corazones+=data[i].likes;
     }
     setPublicaciones(data.length);
     setLikes(corazones);
   }
 
-  const renderItem = ({ item, index }) => {
-    if (item.id === 'dummy-id') {
-      return <View style={styles.emptyItem} />;
-    }
-    return (
-      <TouchableOpacity style={styles.photoContainer} onPress={handlePost}>
-        <Image style={styles.photo} source={item.image}/>
-      </TouchableOpacity>
-    );
-  };
+  //Foto que se renderiza en el FlatList
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.photoContainer} onPress={() => handlePost(item.idMeme)}>
+      <Image style={styles.photo} source={{ uri: `data:image/png;base64,${item.memeImg}` }} />
+    </TouchableOpacity>
+  );
 
   const handleEditProfile = () => {
     navigation.navigate('Edit Profile');
   };
 
-  const handlePost = () => {
+  const handlePost = async (id) => {
+    setIdMeme(id);
+    await Promise.all([getDataMeme(id)]);
     navigation.navigate('Publicacion');
   };
 
@@ -122,12 +133,10 @@ export default function Perfil({ navigation }) {
         </View>
       </View>
       <FlatList
-        data={data}
-        style={{ marginTop: 20 }}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
+        data={datos}
+        keyExtractor={(item) => item.idMeme}
         renderItem={renderItem}
-        columnWrapperStyle={styles.columnWrapper}
+        numColumns={2}
       />
     </View>
   );
@@ -206,6 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
     margin: 2,
+    marginTop: 10,
     borderRadius: 10,
     overflow: 'hidden',
     maxWidth: 200,

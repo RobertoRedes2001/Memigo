@@ -1,18 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Avatar, IconButton, Text } from 'react-native-paper';
 import pantallasContext from '../Contextos/PantallasContext';
 import PostItem from '../Componentes/PostItem';
 
 function Publicaciones({ navigation }) {
-  const { user, setUser, imageUri, setImageUri } = useContext(pantallasContext);
+  const { user, setUser, imageUri, setImageUri, id, memeImg, setMemeImg,
+    memeLikes, setMemeLikes, idMeme, setMemeId } = useContext(pantallasContext);
 
   const handleMenu = () => {
     navigation.navigate('Ver Memes');
-  };
-
-  const handleProfile = () => {
-    navigation.navigate('User');
   };
 
   return (
@@ -27,22 +24,13 @@ function Publicaciones({ navigation }) {
           />
         </View>
       </View>
-      <View style={styles.postHeader}>
-        <TouchableOpacity
-          style={styles.avatarWrapper}
-          onPress={() => handleProfile()}>
-          <Image
-            source={{ uri: `data:image/png;base64,${imageUri}` }}
-            resizeMode="cover"
-            style={styles.avatar}
-          />
-        </TouchableOpacity>
-        <Text style={styles.username}>{user}</Text>
-      </View>
       <PostItem
-        image={'https://pbs.twimg.com/media/FwGSzknWwAAGaCK?format=png&name=360x360'}
-        likes={5}
+        id={idMeme}
+        image={memeImg}
+        likes={memeLikes}
         navigation={navigation}
+        name={user}
+        pfp={imageUri}
       />
     </View>
   );
@@ -68,30 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-  postHeader: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    padding: 10,
-  },
-  username: {
-    marginLeft: 10,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  avatarWrapper: {
-    width: 30,
-    height: 30,
-    borderRadius: 20,
-    overflow: 'hidden',
-    marginRight: 10,
-  },
-  avatar: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor:'red'
-  },
+ 
 });
 
 export default Publicaciones;
