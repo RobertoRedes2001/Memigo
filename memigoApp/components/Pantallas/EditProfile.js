@@ -33,6 +33,7 @@ const EditProfileScreen = ({ navigation }) => {
     setUser(text);
   };
 
+  //Peticion PATCH para actualizar el usuario
   const updateUser = async (id, name,photo) => {
     try {
       const url = `http://192.168.1.55:7038/api/usuarios/UpdateUsuario`;
@@ -62,7 +63,7 @@ const EditProfileScreen = ({ navigation }) => {
   };
   
   
-  
+  //Carga la imagen de perfil nueva
   const handleImageChange = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -78,6 +79,7 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
+  //Actualiza el perfil del usuario
   const handleEditProfile = () => {
     if (newName === '') {
       Alert.alert(alertaUsernameTitulo, alertaUsernameCuerpo, [{ text: 'OK' }]);

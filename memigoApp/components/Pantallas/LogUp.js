@@ -56,6 +56,7 @@ export default function LogUpScreen({ navigation }) {
       ? 'El registro se ha completado, bienvenido a MEMIGO.'
       : 'Registration is complete, welcome to MEMIGO.';
 
+  //Carga la imagen de perfil nueva
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -71,16 +72,17 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
-  const postUser = async (name,pass,mail,photo) => {
+  //Envia una peticion POST a la API para registrar un nuevo usuario
+  const postUser = async (name, pass, mail, photo) => {
     try {
       const url = `http://192.168.1.55:7038/api/usuarios/PostUsuario`;
       const data = {
         nombre: name,
         contra: md5.hex_md5(pass),
-        email : mail,
-        pfp : photo
+        email: mail,
+        pfp: photo
       };
-  
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -88,7 +90,7 @@ export default function LogUpScreen({ navigation }) {
         },
         body: JSON.stringify(data)
       });
-  
+
       if (response.ok) {
         console.log('Usuario actualizado correctamente');
         // Realiza acciones adicionales después de la actualización exitosa
@@ -100,6 +102,7 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
+  //Realiza varias validaciones y si se pasan, se registra el usuario
   const handleLogUp = () => {
     if (user === '') {
       Alert.alert(alertaUsernameTitulo, alertaUsernameCuerpo, [{ text: 'OK' }]);
@@ -124,9 +127,10 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
+  //Se registra a un usuario y se vacian las variables de usuario para ir al login
   const onRegister = () => {
     Alert.alert(registroTitulo, registroCuerpo, [{ text: 'OK' }]);
-    postUser(user,password,email,imageUri);
+    postUser(user, password, email, imageUri);
     setEmail('');
     setPassword('');
     setUser('')
@@ -197,7 +201,7 @@ export default function LogUpScreen({ navigation }) {
         <Button
           mode="contained"
           onPress={pickImage}
-          style={{ width: '75%',  marginTop: 20, }}
+          style={{ width: '75%', marginTop: 20, }}
           color={isSelected ? 'blue' : 'black'}>
           {idioma == 'es' ? 'Seleccionar imagen' : 'Pick an image'}
         </Button>

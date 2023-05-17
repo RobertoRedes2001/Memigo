@@ -12,6 +12,7 @@ const TextInputEmail = ({ idioma, mail, onInputChange, navigateTo, typeB }) => {
     setIcono('');
   }, [navigateTo]);
 
+  //Checa si el email del usuario esta bien escrito
   const handleCheckEmail = (text) => {
     let re = /\S+@\S+\.\S+/;
     let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;

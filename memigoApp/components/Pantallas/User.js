@@ -72,6 +72,7 @@ export default function Perfil({ navigation }) {
     navigation.navigate('Edit Profile');
   };
 
+  //Navega a una publicacion  en base al id del elemento renderizado en la flatlist
   const handlePost = async (id) => {
     setIdMeme(id);
     await Promise.all([getDataMeme(id)]);

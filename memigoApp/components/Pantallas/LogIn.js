@@ -51,6 +51,8 @@ export default function LoginScreen({ navigation }) {
     }
   };
 
+  //Comprueba que el correo y la contraseña existan, despues carga la informacion en las
+  //variables de usuario llama al metodo de onLogin()
   const handleLogin = async (mail, pass) => {
     if(datos.length==0){
       await Promise.all([getDataUsers()]);
@@ -72,6 +74,7 @@ export default function LoginScreen({ navigation }) {
 
   };
 
+  //Resetea Email y Password para un proximo login y navega a Home
   const onLogIn = () => {
     setEmail('');
     setPassword('');
@@ -79,6 +82,7 @@ export default function LoginScreen({ navigation }) {
     navigation.navigate('Home');
   };
 
+  //Resetea Email y Password para un proximo login y navega a la oabtalla de registro
   const onRegister = () => {
     setEmail('');
     setPassword('');
@@ -87,6 +91,7 @@ export default function LoginScreen({ navigation }) {
     navigation.navigate('Log Up');
   };
 
+  //Carga la informacion de usuario al navegar a la pantalla
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getDataUsers();

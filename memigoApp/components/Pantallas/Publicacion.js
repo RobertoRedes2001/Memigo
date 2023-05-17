@@ -28,9 +28,6 @@ function Publicaciones({ navigation }) {
         id={idMeme}
         image={memeImg}
         likes={memeLikes}
-        navigation={navigation}
-        name={user}
-        pfp={imageUri}
       />
     </View>
   );

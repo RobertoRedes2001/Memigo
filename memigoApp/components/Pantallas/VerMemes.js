@@ -18,6 +18,7 @@ export default function VerMemes({ navigation }) {
 
   const [datos, setDatos] = useState(null);
 
+  //Carga la informacion de todos los memes en la base de datos mediante una llamada a la API
   const getDataMemes = async () => {
     try {
       const response = await fetch('http://192.168.1.55:7038/api/memes');
@@ -32,6 +33,7 @@ export default function VerMemes({ navigation }) {
     }
   };
 
+  //Carga la informacion de un meme en base a su ID mediante una llamada a la API
   const getDataMeme = async (meme) => {
     try {
       const response = await fetch('http://192.168.1.55:7038/api/memes/GetMeme/' + meme);
@@ -47,7 +49,7 @@ export default function VerMemes({ navigation }) {
       console.log('Error al obtener los memes:', error);
     }
   };
-
+  //Carga la informacion de un usuario en base a su ID mediante una llamada a la API
   const getDataUser = async (id) => {
     try {
       const response = await fetch('http://192.168.1.55:7038/api/usuarios/GetUsuario/' + id);
@@ -63,6 +65,7 @@ export default function VerMemes({ navigation }) {
     }
   };
 
+  //Renderiza un meme en la FlatList
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.photoContainer} onPress={() => handlePost(item.idMeme)}>
       <Image style={styles.photo} source={{ uri: `data:image/png;base64,${item.memeImg}` }} />
@@ -74,18 +77,12 @@ export default function VerMemes({ navigation }) {
     navigation.navigate('User');
   };
 
-
+//Navega a una publicacion  en base al id del elemento renderizado en la flatlist
   const handlePost = async(x)=>{
     setIdMeme(x);
     await Promise.all([getDataMeme(x)]);
-    if(id!=otherId){
-      await Promise.all([getDataUser(otherId)]);
-      setUserType(false);
-      navigation.navigate('Publicacion');
-    }else{
-      setUserType(true);
-      navigation.navigate('Publicacion');
-    }  
+    navigation.navigate('Publicacion');
+    
   }
 
 

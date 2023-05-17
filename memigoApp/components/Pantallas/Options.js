@@ -27,6 +27,7 @@ export default function Options({ navigation }) {
   const borrarOpcion1 = idioma == 'es' ? 'Cancelar' : 'Cancel';
   const borrarOpcion2 = idioma == 'es' ? 'Borrar Cuenta' : 'Delete Account';
 
+  //Hace una peticion a la API para borrar un usuario
   const deleteUser = async (id) => {
     try {
       const url = `http://192.168.1.55:7038/api/usuarios/DeleteUsuario`;
@@ -53,11 +54,14 @@ export default function Options({ navigation }) {
     }
   };
 
+  //Cambia la variable de idioma de español a ingles (y viceversa)
   const toggleLanguage = () => {
     setIdioma(idioma === 'es' ? 'uk' : 'es');
   };
 
+  //Cierra sesion y vacia la variable la imagen para un proximo usuario
   const handleCloseSesion = () => {
+    setImageUri('');
     navigation.navigate('Log In');
   };
 
@@ -69,11 +73,13 @@ export default function Options({ navigation }) {
     navigation.navigate('Home');
   };
 
+  //Borra la cuenta y manda al usuario a la pantalla de login
   const borrarCuenta = () => {
     deleteUser(id);
     navigation.navigate('Log In');
   }
 
+  //Validacion para borrar cuenta
   const handleDeleteAccount = () => {
     Alert.alert(borrarTitulo, borrarCuerpo, [
       {

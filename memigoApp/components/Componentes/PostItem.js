@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 
-export default function PostItem({ id, image, likes, navigation }) {
+export default function PostItem({ id, image, likes }) {
   
   const [liked, setLiked] = useState(false);
   const [meGustas, setMeGustas] = useState(likes);
 
+  //Hace una peticion a la API para actualizar los Me Gustas de un meme
   const updateLike = async (id) => {
     try {
       const url = `http://192.168.1.55:7038/api/memes/LikeMeme`;
@@ -32,7 +33,7 @@ export default function PostItem({ id, image, likes, navigation }) {
       console.log('Error al actualizar el meme:', error);
     }
   };
-
+  //Hace una peticion a la API para actualizar los Me Gustas de un meme
   const updateDislike = async (id) => {
     try {
       const url = `http://192.168.1.55:7038/api/memes/DislikeMeme`;
@@ -59,6 +60,7 @@ export default function PostItem({ id, image, likes, navigation }) {
     }
   };
 
+  //Actualiza el me gusta al pulsar en el icono y actualiza el numero de likes
   const darFav = async () => {
     if(liked){
       setLiked(false)

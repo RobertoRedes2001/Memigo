@@ -15,6 +15,8 @@ export default function Home({ navigation }) {
   const { user, setUser, imageUri, setImageUri, idioma, setIdioma, id, setId, saveId, setSaveId } =
     useContext(PantallasContext);
 
+  //Navega por las pantallas
+  
   const handleOptions = () => {
     navigation.navigate('Options');
   };

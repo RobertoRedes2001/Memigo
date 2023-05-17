@@ -25,6 +25,7 @@ export default function LogUpScreen({ navigation }) {
   const noHaSubidoCuerpo =
     idioma == 'es' ? 'No ha subido nada... todavia.' : 'why are you like this?';
 
+  //Envia una peticion POST a la API para subir un nuevo meme
   const postMeme = async (idUsu, meme) => {
     try {
       const url = `http://192.168.1.55:7038/api/memes/PostMeme`;
@@ -53,6 +54,7 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
+  //Carga la imagen del meme
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -68,6 +70,7 @@ export default function LogUpScreen({ navigation }) {
     }
   };
 
+  //Si la imagen esta seleccionada, sube el meme, si no, da una alerta
   const onSubmitMeme = async () => {
     if (!isSelected) {
       Alert.alert(noHaSubidoTitulo, noHaSubidoCuerpo, [{ text: 'OK' }]);
