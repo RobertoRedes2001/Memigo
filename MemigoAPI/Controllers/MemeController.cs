@@ -13,12 +13,16 @@ namespace MemigoAPI.Controllers
         {
             _context = memeCtx;
         }
+        //Solicitud HTTP GET al endpoint, retorna una respuesta IActionResult.
+        //Obtiene la lista de memes de la BBDD y se asigna a la variable "memes".
         [HttpGet] //EndPoint
         public IActionResult Get()
         {
             var memes = _context.Memes.ToList<Meme>();
             return Ok(memes);
         }
+        //HTTP GET que recibe un Id de meme y busca el meme correspondiente en la base de datos,
+        //devuelve una respuesta Ok con el meme encontrado.
         [HttpGet] //EndPoint
         [Route("GetMeme/{IdMeme}")]
         public IActionResult GetOneMeme([FromRoute] int IdMeme)
@@ -27,6 +31,8 @@ namespace MemigoAPI.Controllers
             return Ok(memes);
 
         }
+        //HTTP GET que recibe un Id de un usuario y busca el meme correspondiente en la base de datos,
+        //devuelve una respuesta Ok con el meme encontrado.
         [HttpGet] //EndPoint
         [Route("GetMemeUser/{idUser}")]
         public IActionResult GetMemesFromUser([FromRoute] int IdUser)
@@ -35,6 +41,8 @@ namespace MemigoAPI.Controllers
             return Ok(memes);
 
         }
+        //HTTP Post que recibe un objeto AgregarMemeDTO y,
+        //devuelve una respuesta Ok con el meme posteado.
         [HttpPost]
         [Route("PostMeme/")]
         public IActionResult Post(AgregarMemeDTO insertMeme)
@@ -48,6 +56,8 @@ namespace MemigoAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        //HTTP Delete que recibe un objeto BorrarMemeDTO y,
+        //devuelve una respuesta Ok para borrar el meme.
         [HttpDelete]
         [Route("DeleteMeme/")]
         public IActionResult Delete(BorrarMemeDTO deleteMeme)
@@ -61,6 +71,8 @@ namespace MemigoAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        //HTTP Patch que recibe un objeto ActualizarMemeDTO y,
+        //devuelve una respuesta Ok para dar me gusta a un meme.
         [HttpPatch]
         [Route("LikeMeme/")]
         public IActionResult UpdateLike(ActualizarMemeDTO updateMeme)
@@ -75,7 +87,8 @@ namespace MemigoAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
-
+        //HTTP Patch que recibe un objeto ActualizarMemeDTO y,
+        //devuelve una respuesta Ok para quitar me gusta a un meme.
         [HttpPatch]
         [Route("DislikeMeme/")]
         public IActionResult UpdateDislike(ActualizarMemeDTO updateMeme)

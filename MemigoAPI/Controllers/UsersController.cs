@@ -18,12 +18,16 @@ namespace MemigoAPI.Controllers
         {
             _context = userCtx;
         }
+        //Solicitud HTTP GET al endpoint, retorna una respuesta IActionResult.
+        //Obtiene la lista de usuarios de la BBDD y se asigna a la variable "usuarios".
         [HttpGet] //EndPoint
         public IActionResult Get()
         {
             var usuarios = _context.Users.ToList<User>();
             return Ok(usuarios);
         }
+        //HTTP GET que recibe un Id de usuario y busca el usuario correspondiente en la base de datos,
+        //devuelve una respuesta Ok con el usuario encontrado.
         [HttpGet] //EndPoint
         [Route("GetUsuario/{IdUsuario}")]
         public IActionResult GetOneUser([FromRoute] int IdUsuario)
@@ -32,6 +36,8 @@ namespace MemigoAPI.Controllers
             return Ok(usuarios);
 
         }
+        //HTTP Post que recibe un objeto AgregarUserDTO y,
+        //devuelve una respuesta Ok con el meme posteado.
         [HttpPost]
         [Route("PostUsuario/")]
         public IActionResult Post(AgregarUserDTO insertUser)
@@ -42,6 +48,8 @@ namespace MemigoAPI.Controllers
            _context.SaveChanges();
            return Ok();
         }
+        //HTTP Delete que recibe un objeto BorrarUserDTO y,
+        //devuelve una respuesta Ok para borrar el user.
         [HttpDelete]
         [Route("DeleteUsuario/")]
         public IActionResult Delete(BorrarUserDTO deleteUser)
@@ -51,6 +59,8 @@ namespace MemigoAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        //HTTP Patch que recibe un objeto ActualizarUserDTO y,
+        //devuelve una respuesta Ok para actualizar el username y la pfp del usuario.
         [HttpPatch]
         [Route("UpdateUsuario/")]
         public IActionResult Update(ActualizarUserDTO updateUser)
